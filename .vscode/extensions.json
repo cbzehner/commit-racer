@@ -3,6 +3,7 @@
         "serayuzgur.crates",
         "bungcip.better-toml",
         "rust-lang.rust-analyzer",
-        "skellock.just"
+        "skellock.just",
+        "arrterian.nix-env-selector"
     ]
 }

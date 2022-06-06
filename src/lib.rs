@@ -1,8 +1,11 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
+use dotenv;
+use rocket::{Build, Rocket};
+
+use routes::base_routes;
+
+mod routes;
+
+pub fn rocket() -> Rocket<Build> {
+    dotenv::dotenv().ok();
+    rocket::build().mount("/", base_routes())
 }

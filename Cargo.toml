@@ -3,6 +3,20 @@ name = "commit-racer"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+dotenv = "0.15.0"
+rocket = { git = "https://github.com/SergioBenitez/Rocket", features = [ "json", "secrets", "tls" ] }
+rocket_db_pools = { git = "https://github.com/SergioBenitez/Rocket", features = [ "sqlx_postgres" ] }
+rocket_oauth2 = { git = "https://github.com/cbzehner/rocket_oauth2", branch = "cbzehner/rocket-master" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sqlx = { version = "0.5", features = [ "offline", "macros", "migrate", "runtime-tokio-rustls" ] }
+tokio = { version = "1", features = ["full"] }
+url = "2"
+
+[dev-dependencies]
+
+[profile.dev.package]
+
+[profile.dev.package.sqlx-macros]
+opt-level = 3
