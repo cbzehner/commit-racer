@@ -8,7 +8,11 @@ build:
   cargo build
 
 check:
+  cd db/ && just check
   cargo fmt --check
+
+db COMMAND:
+  cd db/ && just {{COMMAND}}
 
 docs:
   cargo doc --open
@@ -16,11 +20,12 @@ docs:
 deploy:
   @echo "Unsupported command."
 
-format:
+fix:
+  cd db/ && just fix
   cargo fmt
 
 initialize:
-  @echo "Unimplemented!"
+  cd db/ && just initialize
 
 # Generate Rust types from the Slack OpenAPI v2 endpoint.
 # Note: `nix shell nixpkgs#wget nixpkgs#jdk` will provide required dependencies.
@@ -32,6 +37,7 @@ run:
   cargo run
 
 test:
+  cd db/ && just test
   cargo test
 
 watch:
