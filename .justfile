@@ -9,6 +9,7 @@ build:
 
 check:
   cd db/ && just check
+  ls scripts/* | xargs shellcheck --check-sourced --severity style --enable all
   cargo fmt --check
 
 db COMMAND:

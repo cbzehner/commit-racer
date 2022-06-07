@@ -4,6 +4,7 @@
         "bungcip.better-toml",
         "rust-lang.rust-analyzer",
         "skellock.just",
-        "arrterian.nix-env-selector"
+        "arrterian.nix-env-selector",
+        "EditorConfig.EditorConfig"
     ]
 }

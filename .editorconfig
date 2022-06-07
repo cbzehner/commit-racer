@@ -1,0 +1,10 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+charset = utf-8             # Set default charset
+end_of_line = lf            # Unix-style newlines
+insert_final_newline = true # End every file with a newline
+indent_style = space        # Use spaces for indentation
