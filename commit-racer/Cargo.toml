@@ -7,6 +7,7 @@ edition = "2021"
 dotenv = "0.15.0"
 rocket = { git = "https://github.com/SergioBenitez/Rocket", features = [ "json", "secrets", "tls" ] }
 rocket_db_pools = { git = "https://github.com/SergioBenitez/Rocket", features = [ "sqlx_postgres" ] }
+rocket_dyn_templates = { git = "https://github.com/SergioBenitez/Rocket", features = [ "tera" ] }
 rocket_oauth2 = { git = "https://github.com/cbzehner/rocket_oauth2", branch = "cbzehner/rocket-master" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

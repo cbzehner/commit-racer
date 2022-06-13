@@ -5,6 +5,7 @@
         "rust-lang.rust-analyzer",
         "skellock.just",
         "arrterian.nix-env-selector",
-        "EditorConfig.EditorConfig"
+        "editorconfig.editorconfig",
+        "karunamurti.tera"
     ]
 }
