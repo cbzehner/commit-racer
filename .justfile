@@ -8,12 +8,13 @@ build:
   cargo build
 
 check:
-  cd db/ && just check
-  ls scripts/* | xargs shellcheck --check-sourced --severity style --enable all
+  @cd db/ && just check
+  @echo "Checking scripts..."
+  @ls scripts/* | xargs shellcheck --enable all --severity style --check-sourced
   cargo fmt --check
 
 db COMMAND:
-  cd db/ && just {{COMMAND}}
+  @cd db/ && just {{COMMAND}}
 
 docs:
   cargo doc --open
@@ -22,23 +23,23 @@ deploy:
   @echo "Unsupported command."
 
 fix:
-  cd db/ && just fix
+  @cd db/ && just fix
   cargo fmt
 
 initialize:
-  cd db/ && just initialize
+  @cd db/ && just initialize
 
 # Generate Rust types from the Slack OpenAPI v2 endpoint.
 # Note: `nix shell nixpkgs#wget nixpkgs#jdk` will provide required dependencies.
 generate-slack-types:
-  mkdir -p ./build
+  @mkdir -p ./build
   cd build && ../scripts/generate-slack-types.sh
 
 run:
   cargo run
 
 test:
-  cd db/ && just test
+  @cd db/ && just test
   cargo test
 
 watch:

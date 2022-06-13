@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS slack.bots (
     id TEXT PRIMARY KEY,
     access_token TEXT NOT NULL,
-    scope TEXT NOT NULL,
+    scopes TEXT NOT NULL,
     workspace_id TEXT NOT NULL REFERENCES slack.workspaces,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()

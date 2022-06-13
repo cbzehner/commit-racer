@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS slack.auth_responses (
     enterprise_id TEXT,
     enterprise_name TEXT,
     is_enterprise_install BOOLEAN NOT NULL,
-    scope TEXT NOT NULL,
+    scopes TEXT NOT NULL,
     workspace_id TEXT NOT NULL,
     workspace_name TEXT NOT NULL,
     json_response JSONB NOT NULL,
@@ -13,24 +13,26 @@ CREATE TABLE IF NOT EXISTS slack.auth_responses (
 );
 
 CREATE OR REPLACE FUNCTION slack_insert_auth_response_rows() RETURNS TRIGGER AS $inserted_rows$
-	BEGIN
-        INSERT INTO slack.enterprises (id, name)
-		VALUES (NEW.enterprise_id, NEW.enterprise_name)
-		ON CONFLICT (id) DO UPDATE SET name = NEW.enterprise_name;
+    BEGIN
+        IF NEW.enterprise_id IS NOT NULL THEN
+            INSERT INTO slack.enterprises (id, name)
+            VALUES (NEW.enterprise_id, NEW.enterprise_name)
+            ON CONFLICT (id) DO UPDATE SET name = NEW.enterprise_name;
+        END IF;
 
-		INSERT INTO slack.workspaces (id, name, enterprise_id)
-		VALUES (NEW.workspace_id, NEW.workspace_name, NEW.enterprise_id)
-		ON CONFLICT (id) DO UPDATE SET (name, enterprise_id) = (NEW.workspace_name, NEW.enterprise_id);
+        INSERT INTO slack.workspaces (id, name, enterprise_id)
+        VALUES (NEW.workspace_id, NEW.workspace_name, NEW.enterprise_id)
+        ON CONFLICT (id) DO UPDATE SET (name, enterprise_id) = (NEW.workspace_name, NEW.enterprise_id);
 
         INSERT INTO slack.workspace_users (id, workspace_id)
-		VALUES (NEW.authed_user_id, NEW.workspace_id)
-		ON CONFLICT DO NOTHING;
-		
-        INSERT INTO slack.bots (id, access_token, scope, workspace_id)
-		VALUES (NEW.bot_user_id, NEW.access_token, NEW.scope, NEW.workspace_id)
-		ON CONFLICT (id) DO UPDATE SET (access_token, scope, workspace_id) = (NEW.access_token, NEW.scope, NEW.workspace_id);
-        
-		RETURN NULL; -- result is ignored since this is an AFTER trigger
+        VALUES (NEW.authed_user_id, NEW.workspace_id)
+        ON CONFLICT DO NOTHING;
+
+        INSERT INTO slack.bots (id, access_token, scopes, workspace_id)
+        VALUES (NEW.bot_user_id, NEW.access_token, NEW.scopes, NEW.workspace_id)
+        ON CONFLICT (id) DO UPDATE SET (access_token, scopes, workspace_id) = (NEW.access_token, NEW.scopes, NEW.workspace_id);
+
+        RETURN NULL; -- result is ignored since this is an AFTER trigger
 	END;
 $inserted_rows$ LANGUAGE plpgsql;
 
