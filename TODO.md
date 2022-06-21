@@ -12,5 +12,11 @@
 
 ## Source Code
 
+## Slack Integration
+- [ ] Opt into token rotations (https://api.slack.com/apps/ARZ3JJPAQ/oauth?)
+- [ ] Enable org-level apps (https://api.slack.com/apps/ARZ3JJPAQ/org-level?)
+- [ ] Disable User ID translation (https://api.slack.com/apps/ARZ3JJPAQ/user-ids?)
+
 ## Meta
 - [ ] Set up a Nix environment with dependencies (Rust, PGFormatter, JDK, Wget, etc)
+- [ ] Manage DB separately from application startup (involves some Nix packaging...)

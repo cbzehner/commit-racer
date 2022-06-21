@@ -279,7 +279,7 @@ dependencies = [
 name = "commit-racer"
 version = "0.1.0"
 dependencies = [
- "dotenv",
+ "dotenvy",
  "rocket",
  "rocket_db_pools",
  "rocket_dyn_templates",
@@ -480,6 +480,15 @@ name = "dotenv"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77c90badedccf4105eca100756a0b1289e191f6fcbdadd3cee1d2f614f97da8f"
+
+[[package]]
+name = "dotenvy"
+version = "0.15.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7e851a83c30366fd01d75b913588e95e74a1705c1ecc5d58b1f8e1a6d556525f"
+dependencies = [
+ "dirs",
+]
 
 [[package]]
 name = "either"

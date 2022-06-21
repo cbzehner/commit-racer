@@ -1,2 +1,11 @@
 /target
 /build
+
+# Set per https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
+.env.*.local
+.env.local
+!.env.development
+!.env.test
+!.env.production
+# Use .env for settings that are shared across all configurations
+!.env

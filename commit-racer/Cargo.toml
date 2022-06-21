@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dotenv = "0.15.0"
+dotenvy = "0.15"
 rocket = { git = "https://github.com/SergioBenitez/Rocket", features = [ "json", "secrets", "tls" ] }
 rocket_db_pools = { git = "https://github.com/SergioBenitez/Rocket", features = [ "sqlx_postgres" ] }
 rocket_dyn_templates = { git = "https://github.com/SergioBenitez/Rocket", features = [ "tera" ] }

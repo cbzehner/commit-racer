@@ -6,25 +6,27 @@ let
     # Rolling updates, not deterministic.
     pkgs = import (fetchTarball("channel:nixpkgs-unstable")) {};
     in pkgs.mkShell {
-    buildInputs = [
-        pkgs.cargo
-        pkgs.clippy
-        pkgs.git
-        pkgs.just
-        pkgs.pgcli
-        pkgs.rust-analyzer
-        pkgs.rustc
-        pkgs.rustfmt
-        pkgs.shellcheck
-        pkgs.sqlfluff
-        pkgs.sqlx-cli
-        darwin.apple_sdk.frameworks.Security #stdenv.isDarwin only
-        darwin.apple_sdk.frameworks.SystemConfiguration #stdenv.isDarwin only
-        libiconv #stdenv.isDarwin only
-    ];
+        buildInputs = [
+            pkgs.cargo
+            pkgs.clippy
+            pkgs.git
+            pkgs.just
+            pkgs.ngrok # TODO: Figure out this unfree bullshit
+            pkgs.pgcli
+            pkgs.rust-analyzer
+            pkgs.rustc
+            pkgs.rustfmt
+            pkgs.shellcheck
+            pkgs.sqlfluff
+            pkgs.sqlx-cli
+            darwin.apple_sdk.frameworks.CoreServices #stdenv.isDarwin only
+            darwin.apple_sdk.frameworks.Security #stdenv.isDarwin only
+            darwin.apple_sdk.frameworks.SystemConfiguration #stdenv.isDarwin only
+            libiconv #stdenv.isDarwin only
+        ];
 
-    # Certain Rust tools won't work without this
-    # This can also be fixed by using oxalica/rust-overlay and specifying the rust-src extension
-    # See https://discourse.nixos.org/t/rust-src-not-found-and-other-misadventures-of-developing-rust-on-nixos/11570/3?u=samuela. for more details.
-    RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
-}
+        # Certain Rust tools won't work without this
+        # This can also be fixed by using oxalica/rust-overlay and specifying the rust-src extension
+        # See https://discourse.nixos.org/t/rust-src-not-found-and-other-misadventures-of-developing-rust-on-nixos/11570/3?u=samuela. for more details.
+        RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+    }
