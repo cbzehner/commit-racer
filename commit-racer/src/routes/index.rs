@@ -1,8 +1,17 @@
 use rocket_dyn_templates::{context, Template};
 
+use crate::models::User;
+
+#[rocket::get("/", rank = 2)]
+pub(crate) fn logged_out() -> Template {
+    println!("Logged out, no user found!");
+    Template::render("logged-out", context! {})
+}
+
 #[rocket::get("/")]
-pub(crate) fn index() -> Template {
-    Template::render("hello", context! { field: "Chris" })
+pub(crate) fn logged_in(user: User) -> Template {
+    println!("Logged in! Found user: {:?}", user);
+    Template::render("logged-in", context! { user })
 }
 
 // #[cfg(test)]

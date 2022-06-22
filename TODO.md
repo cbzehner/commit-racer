@@ -12,6 +12,8 @@
 - [ ] Tune Postgres config. Local instance of Postgres defaults to 100 "max connections" but the recommended number from `rocket_db_pools` is 1024
 
 ## Source Code
+- [ ] Use secure cookies
+- [ ] Use Request-Local State in User request guard
 
 ## Slack Integration
 - [ ] Opt into token rotations (https://api.slack.com/apps/ARZ3JJPAQ/oauth?)

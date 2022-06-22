@@ -1,11 +1,12 @@
-use rocket::http::{Cookie, CookieJar, SameSite};
+use rocket::http::{Cookie, CookieJar};
 use rocket::response::Redirect;
 use rocket::Route;
-use rocket_db_pools::Connection;
+use rocket_db_pools::sqlx::PgPool;
 use rocket_oauth2::{OAuth2, TokenResponse};
 
 use crate::db::DB;
 use crate::models::slack::AuthResponse;
+use crate::models::User;
 
 pub(crate) fn auth_routes() -> Vec<Route> {
     return rocket::routes![login, callback];
@@ -19,48 +20,41 @@ fn login(oauth2: OAuth2<AuthResponse>, cookies: &CookieJar<'_>) -> Redirect {
 }
 
 #[rocket::get("/callback")]
-async fn callback(
-    token: TokenResponse<AuthResponse>,
-    conn: Connection<DB>,
-    jar: &CookieJar<'_>,
-) -> Redirect {
+async fn callback(token: TokenResponse<AuthResponse>, pool: &DB, jar: &CookieJar<'_>) -> Redirect {
     let token = token.as_value();
+    let slack_user_id = token["authed_user"]["id"].as_str().unwrap_or_default();
 
-    let result = sqlx::query_file!(
-        "../db/queries/insert_slack_auth_response.sql",
-        token["access_token"].as_str(),
-        token["authed_user"]["id"].as_str(),
-        token["bot_user_id"].as_str(),
-        token["enterprise"].get("id").map(|v| v.as_str()).flatten(),
-        token["enterprise"]
-            .get("name")
-            .map(|v| v.as_str())
-            .flatten(),
-        token["scope"].as_str(),
-        token["team"]["id"].as_str(),
-        token["team"]["name"].as_str(),
-        token,
-    )
-    .execute(&mut conn.into_inner())
-    .await;
+    let _ = match PgPool::acquire(pool).await {
+        Ok(mut conn) => {
+            let _ = sqlx::query_file!(
+                "../db/queries/insert_slack_auth_response.sql",
+                token["access_token"].as_str(),
+                slack_user_id,
+                token["bot_user_id"].as_str(),
+                token["enterprise"].get("id").map(|v| v.as_str()).flatten(),
+                token["enterprise"]
+                    .get("name")
+                    .map(|v| v.as_str())
+                    .flatten(),
+                token["scope"].as_str(),
+                token["team"]["id"].as_str(),
+                token["team"]["name"].as_str(),
+                token,
+            )
+            .execute(&mut conn)
+            .await;
+            Ok(())
+        }
+        Err(error) => Err(error),
+    };
+
+    let result = match PgPool::acquire(pool).await {
+        Ok(conn) => User::get_or_create_by_slack_id(conn, slack_user_id.to_owned()).await,
+        Err(error) => Err(error),
+    };
 
     match result {
-        Ok(_) => {
-            jar.add_private(
-                Cookie::build("slack_user_id", token["authed_user"]["id"].to_string())
-                    .http_only(true)
-                    .same_site(SameSite::Strict)
-                    .secure(true)
-                    .finish(),
-            );
-            jar.add_private(
-                Cookie::build("slack_access_token", token["access_token"].to_string())
-                    .http_only(true)
-                    .same_site(SameSite::Strict)
-                    .secure(true)
-                    .finish(),
-            );
-        }
+        Ok(user) => jar.add(Cookie::new("user_id", user.id.to_string())),
         Err(err) => println!("{:?}", err),
     };
     Redirect::to("/")

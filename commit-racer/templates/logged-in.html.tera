@@ -1,0 +1,20 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--
+    The above 2 meta tags *must* come first in the <head>
+    to consistently ensure proper document rendering.
+    Any other head element should come *after* these tags.
+    -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏎️</text></svg>">
+    <title>Commit Racer</title>
+</head>
+
+<h1>Commit Racer</h1>
+<p>Hello {{ user.id }}</p>
+<p>Tired of waiting for around for trivial diffs to get reviewed? Make code review great again with Commit Racer!</p>
+<p>Connect your Slack and Github accounts and simply type <code>/race &lt;link-to-pull-request&gt;</code>. Commit Racer
+    will
+    start a race and record the first reviewer as the winner!</p>
+<p>Grow by climbing the leader board and unlocking new abilities!</p>

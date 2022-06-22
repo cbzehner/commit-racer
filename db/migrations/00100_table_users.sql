@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY,
-    github_user_id TEXT REFERENCES github.users,
-    slack_user_id TEXT REFERENCES slack.workspace_users,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    github_user_id TEXT UNIQUE REFERENCES github.users,
+    slack_user_id TEXT UNIQUE NOT NULL REFERENCES slack.workspace_users,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
