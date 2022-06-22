@@ -1,4 +1,4 @@
-/target
+# Temporary directory for build artifacts
 /build
 
 # Set per https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use

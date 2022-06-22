@@ -20,7 +20,6 @@ INSERT INTO slack.auth_responses (
     bot_user_id,
     enterprise_id,
     enterprise_name,
-    is_enterprise_install,
     scopes,
     workspace_id,
     workspace_name,
@@ -31,7 +30,6 @@ INSERT INTO slack.auth_responses (
     'U5678EFGH',
     NULL,
     NULL,
-    'false',
     'commands,chat:write,users:read',
     'T9876ZYXW',
     'Company Foo',
@@ -45,7 +43,6 @@ INSERT INTO slack.auth_responses (
 --     bot_user_id,
 --     enterprise_id,
 --     enterprise_name,
---     is_enterprise_install,
 --     scopes,
 --     workspace_id,
 --     workspace_name,
@@ -76,7 +73,6 @@ SELECT
             'U5678EFGH', -- bot_user_id
             NULL, -- enterprise_id
             NULL, -- enterprise_name
-            'false', -- is_enterprise_install
             'commands,chat:write,users:read', -- scopes
             'T9876ZYXW', -- workspace_id
             'Company Foo', -- workspace_name

@@ -5,13 +5,13 @@ edition = "2021"
 
 [dependencies]
 dotenvy = "0.15"
-rocket = { git = "https://github.com/SergioBenitez/Rocket", features = [ "json", "secrets", "tls" ] }
-rocket_db_pools = { git = "https://github.com/SergioBenitez/Rocket", features = [ "sqlx_postgres" ] }
-rocket_dyn_templates = { git = "https://github.com/SergioBenitez/Rocket", features = [ "tera" ] }
-rocket_oauth2 = { git = "https://github.com/cbzehner/rocket_oauth2", branch = "cbzehner/rocket-master" }
+rocket = { version = "0.5.0-rc.2", features = [ "json", "secrets", "tls" ] }
+rocket_db_pools = { version = "0.1.0-rc.2", features = [ "sqlx_postgres" ] }
+rocket_dyn_templates = { version = "0.1.0-rc.2", features = [ "tera" ] }
+rocket_oauth2 = { git = "https://github.com/cbzehner/rocket_oauth2", branch = "cbzehner/0.5.0-rc.2" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-sqlx = { version = "0.5", features = [ "offline", "macros", "migrate", "runtime-tokio-rustls" ] }
+sqlx = { version = "0.5", features = [ "offline", "json", "macros", "migrate", "runtime-tokio-rustls" ] }
 tokio = { version = "1", features = ["full"] }
 url = "2"
 

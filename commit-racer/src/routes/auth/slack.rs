@@ -1,8 +1,10 @@
 use rocket::http::{Cookie, CookieJar, SameSite};
 use rocket::response::Redirect;
 use rocket::Route;
+use rocket_db_pools::Connection;
 use rocket_oauth2::{OAuth2, TokenResponse};
 
+use crate::db::DB;
 use crate::models::slack::AuthResponse;
 
 pub(crate) fn auth_routes() -> Vec<Route> {
@@ -17,36 +19,50 @@ fn login(oauth2: OAuth2<AuthResponse>, cookies: &CookieJar<'_>) -> Redirect {
 }
 
 #[rocket::get("/callback")]
-fn callback(
+async fn callback(
     token: TokenResponse<AuthResponse>,
-    cookies: &CookieJar<'_>,
-    // pool: &DB,
+    conn: Connection<DB>,
+    jar: &CookieJar<'_>,
 ) -> Redirect {
-    // let value = token.as_value();
-    // let response = Response(value.clone());
-    // match response.insert(pool).await {
-    //     Ok(_) => {
-    //         cookies.add_private(
-    //             Cookie::build("slack_token", token.access_token().to_string())
-    //                 .http_only(true)
-    //                 .same_site(SameSite::Strict)
-    //                 .secure(true)
-    //                 .finish(),
-    //         );
-    //         Redirect::to("/")
-    //     }
-    //     Err(err) => {
-    //         println!("{:?}", err);
-    //         Redirect::to("/")
-    //     }
-    // }
-    cookies.add_private(
-        Cookie::build("slack_token", token.access_token().to_string())
-            .http_only(true)
-            .same_site(SameSite::Strict)
-            .secure(true)
-            .finish(),
-    );
+    let token = token.as_value();
+
+    let result = sqlx::query_file!(
+        "../db/queries/insert_slack_auth_response.sql",
+        token["access_token"].as_str(),
+        token["authed_user"]["id"].as_str(),
+        token["bot_user_id"].as_str(),
+        token["enterprise"].get("id").map(|v| v.as_str()).flatten(),
+        token["enterprise"]
+            .get("name")
+            .map(|v| v.as_str())
+            .flatten(),
+        token["scope"].as_str(),
+        token["team"]["id"].as_str(),
+        token["team"]["name"].as_str(),
+        token,
+    )
+    .execute(&mut conn.into_inner())
+    .await;
+
+    match result {
+        Ok(_) => {
+            jar.add_private(
+                Cookie::build("slack_user_id", token["authed_user"]["id"].to_string())
+                    .http_only(true)
+                    .same_site(SameSite::Strict)
+                    .secure(true)
+                    .finish(),
+            );
+            jar.add_private(
+                Cookie::build("slack_access_token", token["access_token"].to_string())
+                    .http_only(true)
+                    .same_site(SameSite::Strict)
+                    .secure(true)
+                    .finish(),
+            );
+        }
+        Err(err) => println!("{:?}", err),
+    };
     Redirect::to("/")
 }
 

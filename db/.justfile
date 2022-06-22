@@ -20,7 +20,7 @@ initialize:
   psql --command 'CREATE EXTENSION IF NOT EXISTS pgtap;'  --dbname commit_racer --username postgres --no-password
 
 new MIGRATION_NAME:
-	cargo sqlx migrate add --source ./migrations {{MIGRATION_NAME}} --database-url postgres://commit_racer:@localhost:5432/commit_racer
+	cargo sqlx migrate add --source ./migrations {{MIGRATION_NAME}}
 
 reset:
   psql --command 'DROP DATABASE commit_racer;'  --dbname postgres --username postgres --no-password
@@ -29,7 +29,7 @@ reset:
   just run
 
 run:
-	cargo sqlx migrate run --source ./migrations --database-url postgres://commit_racer:@localhost:5432/commit_racer
+	cargo sqlx migrate run --source ./migrations
 
 test:
   @pg_prove --dbname commit_racer --username commit_racer ./tests/**/** --verbose

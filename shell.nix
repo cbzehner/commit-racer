@@ -8,10 +8,11 @@ let
     in pkgs.mkShell {
         buildInputs = [
             pkgs.cargo
+            # pkgs.cargo-watch
             pkgs.clippy
             pkgs.git
             pkgs.just
-            pkgs.ngrok # TODO: Figure out this unfree bullshit
+            # pkgs.ngrok # TODO: Figure out this unfree bullshit
             pkgs.pgcli
             pkgs.rust-analyzer
             pkgs.rustc

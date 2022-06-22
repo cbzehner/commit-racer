@@ -9,6 +9,7 @@
 - [ ] Setup a SQL formatter (pgFormatter?, sqlfmt?)
 - [ ] Read through [Awesome Postgres](https://dhamaniasad.github.io/awesome-postgres/)
 - [ ] Investigate [Postgres Check-up](https://gitlab.com/postgres-ai/postgres-checkup)
+- [ ] Tune Postgres config. Local instance of Postgres defaults to 100 "max connections" but the recommended number from `rocket_db_pools` is 1024
 
 ## Source Code
 

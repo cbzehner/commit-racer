@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS slack.auth_responses (
     bot_user_id TEXT,
     enterprise_id TEXT,
     enterprise_name TEXT,
-    is_enterprise_install BOOLEAN NOT NULL,
     scopes TEXT NOT NULL,
     workspace_id TEXT NOT NULL,
     workspace_name TEXT NOT NULL,

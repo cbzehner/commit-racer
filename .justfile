@@ -5,29 +5,29 @@ help:
   @just --list
 
 build:
-  cargo build
+  @just commit-racer build
 
 check:
-  @cd db/ && just check
-  @echo "Checking scripts..."
-  @ls scripts/* | xargs shellcheck --enable all --severity style --check-sourced
-  cargo fmt --check
+  @just commit-racer check
+  @just db check
+  @echo "Checking scripts..." && ls scripts/* | xargs shellcheck --enable all --severity style --check-sourced
+
+commit-racer COMMAND:
+  @cd commit-racer/ && just {{COMMAND}}
 
 db COMMAND:
   @cd db/ && just {{COMMAND}}
-
-docs:
-  cargo doc --open
 
 deploy:
   @echo "Unsupported command."
 
 fix:
-  @cd db/ && just fix
-  cargo fmt
+  @just commit-racer fix
+  @just db fix
 
 initialize:
-  @cd db/ && just initialize
+  # @just commit-racer fix
+  @just db fix
 
 # Generate Rust types from the Slack OpenAPI v2 endpoint.
 # Note: `nix shell nixpkgs#wget nixpkgs#jdk` will provide required dependencies.
@@ -36,17 +36,8 @@ generate-slack-types:
   cd build && ../scripts/generate-slack-types.sh
 
 run:
-  cargo run
+  @just commit-racer run
 
 test:
-  @cd db/ && just test
-  cargo test
-
-watch:
-  cargo watch -x build
-
-watch-fast:
-  cargo watch
-
-watch-test:
-  cargo watch -x test
+  @just commit-racer test
+  @just db test

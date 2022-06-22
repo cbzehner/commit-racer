@@ -1,0 +1,23 @@
+{
+  "db": "PostgreSQL",
+  "36bbb078d05dd7b3fd5789d4b7394812150016471d5ba814279f01b3b2b6471c": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Jsonb"
+        ]
+      }
+    },
+    "query": "INSERT INTO slack.auth_responses (\n\taccess_token,\n\tauthed_user_id,\n\tbot_user_id,\n\tenterprise_id,\n\tenterprise_name,\n\tscopes,\n\tworkspace_id,\n\tworkspace_name,\n\tjson_response\n) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);\n"
+  }
+}
