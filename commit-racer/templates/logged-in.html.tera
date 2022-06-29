@@ -12,9 +12,5 @@
 </head>
 
 <h1>Commit Racer</h1>
-<p>Hello {{ user.id }}</p>
-<p>Tired of waiting for around for trivial diffs to get reviewed? Make code review great again with Commit Racer!</p>
-<p>Connect your Slack and Github accounts and simply type <code>/race &lt;link-to-pull-request&gt;</code>. Commit Racer
-    will
-    start a race and record the first reviewer as the winner!</p>
-<p>Grow by climbing the leader board and unlocking new abilities!</p>
+<p>Hello {{ user.id }}, please continue by connecting your GitHub account</p>
+

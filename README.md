@@ -52,3 +52,6 @@
 
 ### Background Reading
 - [Data models for Slack Apps](https://wilhelmklopp.com/posts/slack-database-modelling/)
+
+## Prior Art
+- [Version 0](https://github.com/cbzehner/commit-racer-version-0)

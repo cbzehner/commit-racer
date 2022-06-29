@@ -8,6 +8,7 @@ pub(crate) fn configuration() -> Figment {
 
     Config::figment()
         .merge(postgres_config())
+        .merge(github_oauth_config())
         .merge(slack_oauth_config())
         .merge(template_location())
 }
@@ -48,6 +49,31 @@ fn postgres_config() -> Figment {
             max_connections: 64, // TODO: Investigate supporting more connections. Only support 100 max connections locally. Ideally ~1024?
             connect_timeout: 5,  // Five seconds
             idle_timeout: Some(120), // One-hundred and twenty seconds
+        },
+    ))
+}
+
+// Create GitHub OAuth2 configuration from local environment.
+fn github_oauth_config() -> Figment {
+    let auth_uri = dotenvy::var("ROCKET_OAUTH_GITHUB_AUTH_URI")
+        .expect("Missing environment variable ROCKET_OAUTH_GITHUB_AUTH_URI");
+    let token_uri = dotenvy::var("ROCKET_OAUTH_GITHUB_TOKEN_URI")
+        .expect("Missing environment variable ROCKET_OAUTH_GITHUB_TOKEN_URI");
+    let client_id = dotenvy::var("ROCKET_OAUTH_GITHUB_CLIENT_ID")
+        .expect("Missing environment variable ROCKET_OAUTH_GITHUB_CLIENT_ID");
+    let client_secret = dotenvy::var("ROCKET_OAUTH_GITHUB_CLIENT_SECRET")
+        .expect("Missing environment variable ROCKET_OAUTH_GITHUB_CLIENT_SECRET");
+    let redirect_uri = dotenvy::var("ROCKET_OAUTH_GITHUB_REDIRECT_URI")
+        .expect("Missing environment variable ROCKET_OAUTH_GITHUB_REDIRECT_URI");
+
+    Figment::from((
+        "oauth.github",
+        figment::map! {
+            "auth_uri" => auth_uri,
+            "token_uri" => token_uri,
+            "client_id" => client_id,
+            "client_secret" => client_secret,
+            "redirect_uri" => redirect_uri,
         },
     ))
 }

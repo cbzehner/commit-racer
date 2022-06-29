@@ -1,3 +1,4 @@
+pub(crate) mod github;
 pub(crate) mod slack;
 mod user;
 
